@@ -119,6 +119,18 @@
         .fullscreen-toggle img {
             height: 20px;
         }
+        .upload-toggle {
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .upload-toggle img {
+            height: 20px;
+        }
         #codeEditor {
             padding: 12px;
             font-size: 16px;
@@ -130,6 +142,7 @@
             max-height: 400px;
             overflow: auto;
             white-space: pre;
+            outline: none;
         }
         #dataUrlDisplay {
             margin-top: 20px;
@@ -187,6 +200,9 @@
         <button class="fullscreen-toggle" onclick="toggleFullscreen()">
             <img src="https://www.freeiconspng.com/uploads/white-full-screen-icon-5.png" alt="Fullscreen Toggle">
         </button>
+        <button class="upload-toggle" onclick="uploadFile()">
+            <img src="https://i.imgur.com/IJzOm2Y.png" alt="Upload">
+        </button>
         <pre id="codeEditor" class="language-html" contenteditable="true"></pre>
     </div>
     <div id="dataUrlDisplay">Data URL Will Appear Here</div>
@@ -221,6 +237,10 @@
         } else {
             document.exitFullscreen();
         }
+    }
+
+    function uploadFile() {
+        alert("Upload feature coming soon!");
     }
 
     function updateDataUrl() {
