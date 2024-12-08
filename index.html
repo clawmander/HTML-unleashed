@@ -143,6 +143,7 @@
             overflow: auto;
             white-space: pre;
             outline: none;
+            margin: 0;
         }
         #dataUrlDisplay {
             margin-top: 20px;
@@ -200,9 +201,10 @@
         <button class="fullscreen-toggle" onclick="toggleFullscreen()">
             <img src="https://www.freeiconspng.com/uploads/white-full-screen-icon-5.png" alt="Fullscreen Toggle">
         </button>
-        <button class="upload-toggle" onclick="uploadFile()">
+        <button class="upload-toggle" onclick="document.getElementById('fileInput').click()">
             <img src="https://i.imgur.com/IJzOm2Y.png" alt="Upload">
         </button>
+        <input type="file" id="fileInput" accept=".html" style="display: none;" onchange="handleFileUpload(event)">
         <pre id="codeEditor" class="language-html" contenteditable="true"></pre>
     </div>
     <div id="dataUrlDisplay">Data URL Will Appear Here</div>
@@ -212,8 +214,6 @@
 <div id="aboutModal">
     <h2>About HTML Unleashed</h2>
     <p>HTML Unleashed is a tool designed to empower students and developers alike by providing an innovative way to work with HTML code effortlessly. Created by Exploit Kid, this project was born out of the need to bypass restrictive environments that limit creativity and exploration in coding. With HTML Unleashed, users can encode their HTML into a Data URL, allowing them to execute and test their code directly within a browser without relying on external tools or servers.</p>
-    <p>This tool is especially beneficial for students looking to learn and experiment with HTML in environments where traditional tools might be unavailable. It simplifies the process of creating, testing, and sharing HTML code, making it accessible to anyone, anywhere. By leveraging the power of Data URLs, users can load their code as fully functional web pages instantly.</p>
-    <p>Whether you're a beginner exploring the basics of web development or an advanced user finding creative ways to share your projects, HTML Unleashed offers a fast, reliable, and user-friendly solution. It's more than just a tool—it's a gateway to innovation and a testament to the power of technology.</p>
     <button class="close-button" onclick="closeAboutModal()">CLOSE</button>
 </div>
 
@@ -234,13 +234,24 @@
         const editor = document.getElementById('codeEditor');
         if (!document.fullscreenElement) {
             editor.requestFullscreen();
+            editor.style.height = '100vh';  // Adjust editor size on fullscreen
         } else {
             document.exitFullscreen();
+            editor.style.height = 'auto';  // Reset editor size after exiting fullscreen
         }
     }
 
-    function uploadFile() {
-        alert("Upload feature coming soon!");
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (file && file.type === "text/html") {
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('codeEditor').textContent = reader.result;
+            };
+            reader.readAsText(file);
+        } else {
+            alert("Please upload a valid HTML file.");
+        }
     }
 
     function updateDataUrl() {
