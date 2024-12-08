@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Unleashed</title>
+    <link rel="icon" href="https://i.imgur.com/NyPZxPZ.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            color: #fff;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 30px;
+            background-color: #2b2b3c;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff6b6b;
+        }
+        h1 img {
+            margin-right: 10px;
+            height: 30px;
+        }
+        .github-link {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .github-link a {
+            color: #ff6b6b;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .github-link a:hover {
+            text-decoration: underline;
+        }
+        .about-button {
+            display: block;
+            margin: 10px auto 20px;
+            padding: 6px 12px;
+            font-size: 14px;
+            background-color: #ff6b6b;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: auto;
+            transition: background-color 0.3s ease;
+        }
+        .about-button:hover {
+            background-color: #e05656;
+        }
+        #aboutModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            background-color: #2b2b3c;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        #aboutModal p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        #aboutModal .close-button {
+            display: block;
+            margin: 0 auto;
+            padding: 6px 12px;
+            font-size: 14px;
+            background-color: #ff6b6b;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #aboutModal .close-button:hover {
+            background-color: #e05656;
+        }
+        .editor-container {
+            position: relative;
+            margin-top: 20px;
+        }
+        .fullscreen-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .fullscreen-toggle img {
+            height: 20px;
+        }
+        #codeEditor {
+            padding: 12px;
+            font-size: 16px;
+            background-color: #1e1e2f;
+            color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow: auto;
+            white-space: pre;
+        }
+        #dataUrlDisplay {
+            margin-top: 20px;
+            background-color: #333;
+            padding: 12px;
+            border-radius: 5px;
+            word-wrap: break-word;
+            font-family: monospace;
+            color: #ff6b6b;
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+        #copyButton {
+            margin-top: 20px;
+            background-color: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        #copyButton:hover {
+            background-color: #e05656;
+        }
+        #copyButton:active {
+            transform: scale(0.98);
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+        .footer a {
+            color: #ff6b6b;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>
+        <img src="https://i.imgur.com/NyPZxPZ.png" alt="Logo">
+        HTML Unleashed
+    </h1>
+    <div class="github-link">
+        <a href="https://github.com/clawmander/HTML-unleashed" target="_blank">Please ⭐ the project on GitHub!</a>
+    </div>
+    <button class="about-button" onclick="openAboutModal()">About</button>
+    <div class="editor-container">
+        <button class="fullscreen-toggle" onclick="toggleFullscreen()">
+            <img src="https://www.freeiconspng.com/uploads/white-full-screen-icon-5.png" alt="Fullscreen Toggle">
+        </button>
+        <pre id="codeEditor" class="language-html" contenteditable="true"></pre>
+    </div>
+    <div id="dataUrlDisplay">Data URL Will Appear Here</div>
+    <button id="copyButton" onclick="copyDataUrl()">Copy Data URL</button>
+</div>
+
+<div id="aboutModal">
+    <h2>About HTML Unleashed</h2>
+    <p>HTML Unleashed is a tool designed to empower students and developers alike by providing an innovative way to work with HTML code effortlessly. Created by Exploit Kid, this project was born out of the need to bypass restrictive environments that limit creativity and exploration in coding. With HTML Unleashed, users can encode their HTML into a Data URL, allowing them to execute and test their code directly within a browser without relying on external tools or servers.</p>
+    <p>This tool is especially beneficial for students looking to learn and experiment with HTML in environments where traditional tools might be unavailable. It simplifies the process of creating, testing, and sharing HTML code, making it accessible to anyone, anywhere. By leveraging the power of Data URLs, users can load their code as fully functional web pages instantly.</p>
+    <p>Whether you're a beginner exploring the basics of web development or an advanced user finding creative ways to share your projects, HTML Unleashed offers a fast, reliable, and user-friendly solution. It's more than just a tool—it's a gateway to innovation and a testament to the power of technology.</p>
+    <button class="close-button" onclick="closeAboutModal()">CLOSE</button>
+</div>
+
+<div class="footer">
+    <p>All Rights Reserved <a href="https://github.com/clawmander" target="_blank">Exploit Kid</a></p>
+</div>
+
+<script>
+    function openAboutModal() {
+        document.getElementById('aboutModal').style.display = 'block';
+    }
+
+    function closeAboutModal() {
+        document.getElementById('aboutModal').style.display = 'none';
+    }
+
+    function toggleFullscreen() {
+        const editor = document.getElementById('codeEditor');
+        if (!document.fullscreenElement) {
+            editor.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    function updateDataUrl() {
+        const code = document.getElementById('codeEditor').textContent;
+        const dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(code);
+        document.getElementById('dataUrlDisplay').textContent = dataUrl;
+    }
+
+    function copyDataUrl() {
+        const dataUrl = document.getElementById('dataUrlDisplay').textContent;
+        var tempInput = document.createElement('input');
+        tempInput.value = dataUrl;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        alert('Data URL copied to clipboard!');
+    }
+
+    document.getElementById('codeEditor').addEventListener('input', updateDataUrl);
+</script>
+</body>
+</html>
