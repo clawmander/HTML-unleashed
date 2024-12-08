@@ -247,6 +247,7 @@
             const reader = new FileReader();
             reader.onload = function() {
                 document.getElementById('codeEditor').textContent = reader.result;
+                updateDataUrl();  // Ensure the data URL is updated when the file is loaded
             };
             reader.readAsText(file);
         } else {
@@ -272,6 +273,7 @@
     }
 
     document.getElementById('codeEditor').addEventListener('input', updateDataUrl);
+    window.onload = updateDataUrl;
 </script>
 </body>
 </html>
