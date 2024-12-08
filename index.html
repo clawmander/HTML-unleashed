@@ -115,6 +115,7 @@
             border: none;
             cursor: pointer;
             padding: 0;
+            title: "Fullscreen the editor";
         }
         .fullscreen-toggle img {
             height: 20px;
@@ -127,6 +128,7 @@
             border: none;
             cursor: pointer;
             padding: 0;
+            title: "Upload HTML file";
         }
         .upload-toggle img {
             height: 20px;
@@ -185,6 +187,25 @@
         .footer a:hover {
             text-decoration: underline;
         }
+        .tooltip {
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 25px;
+            left: 50%;
+            margin-left: -60px;
+            font-size: 12px;
+            transition: visibility 0.3s ease;
+        }
+        .fullscreen-toggle:hover .tooltip,
+        .upload-toggle:hover .tooltip {
+            visibility: visible;
+        }
     </style>
 </head>
 <body>
@@ -200,9 +221,11 @@
     <div class="editor-container">
         <button class="fullscreen-toggle" onclick="toggleFullscreen()">
             <img src="https://www.freeiconspng.com/uploads/white-full-screen-icon-5.png" alt="Fullscreen Toggle">
+            <span class="tooltip">Fullscreen the editor</span>
         </button>
         <button class="upload-toggle" onclick="document.getElementById('fileInput').click()">
             <img src="https://i.imgur.com/IJzOm2Y.png" alt="Upload">
+            <span class="tooltip">Upload HTML file</span>
         </button>
         <input type="file" id="fileInput" accept=".html" style="display: none;" onchange="handleFileUpload(event)">
         <pre id="codeEditor" class="language-html" contenteditable="true"></pre>
@@ -232,12 +255,10 @@
 
     function toggleFullscreen() {
         const editor = document.getElementById('codeEditor');
-        if (!document.fullscreenElement) {
-            editor.requestFullscreen();
-            editor.style.height = '100vh';  // Adjust editor size on fullscreen
-        } else {
+        if (document.fullscreenElement) {
             document.exitFullscreen();
-            editor.style.height = 'auto';  // Reset editor size after exiting fullscreen
+        } else {
+            editor.requestFullscreen();
         }
     }
 
@@ -245,35 +266,19 @@
         const file = event.target.files[0];
         if (file && file.type === "text/html") {
             const reader = new FileReader();
-            reader.onload = function() {
-                document.getElementById('codeEditor').textContent = reader.result;
-                updateDataUrl();  // Ensure the data URL is updated when the file is loaded
+            reader.onload = function(e) {
+                document.getElementById('codeEditor').textContent = e.target.result;
             };
             reader.readAsText(file);
-        } else {
-            alert("Please upload a valid HTML file.");
         }
-    }
-
-    function updateDataUrl() {
-        const code = document.getElementById('codeEditor').textContent;
-        const dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(code);
-        document.getElementById('dataUrlDisplay').textContent = dataUrl;
     }
 
     function copyDataUrl() {
         const dataUrl = document.getElementById('dataUrlDisplay').textContent;
-        var tempInput = document.createElement('input');
-        tempInput.value = dataUrl;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-        alert('Data URL copied to clipboard!');
+        navigator.clipboard.writeText(dataUrl).then(function() {
+            alert('Data URL copied to clipboard');
+        });
     }
-
-    document.getElementById('codeEditor').addEventListener('input', updateDataUrl);
-    window.onload = updateDataUrl;
 </script>
 </body>
 </html>
