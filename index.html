@@ -7,7 +7,25 @@
     <link rel="icon" href="https://i.imgur.com/NyPZxPZ.png" type="image/png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
     <style>
-        body {
+     .tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInTooltip 0.2s ease;
+}
+@keyframes fadeInTooltip {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+   
+            body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
@@ -283,11 +301,26 @@
         document.getElementById('dataUrlDisplay').textContent = dataUrl;
     }
 
+     // Copy Data URL to clipboard
     function copyDataUrl() {
         const dataUrl = document.getElementById('dataUrlDisplay').textContent;
-        navigator.clipboard.writeText(dataUrl).then(() => {
-            alert("Data URL copied to clipboard!");
-        });
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(dataUrl).then(function() {
+                alert('Data URL copied to clipboard');
+            }).catch(function(error) {
+                console.error('Error copying text: ', error);
+                alert('Failed to copy Data URL');
+            });
+        } else {
+            // Fallback for browsers without clipboard API support
+            const textarea = document.createElement('textarea');
+            textarea.value = dataUrl;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('Data URL copied to clipboard');
+        }
     }
 
     function openAboutModal() {
@@ -306,6 +339,27 @@
             document.exitFullscreen();
         }
     }
+</script>
+<script>
+    document.querySelectorAll(".file-manager-toggle, .fullscreen-toggle").forEach(button => {
+        button.addEventListener("mouseover", function() {
+            const tooltip = document.createElement("div");
+            tooltip.className = "tooltip";
+            tooltip.innerText = this.classList.contains("file-manager-toggle") 
+                ? "Open File Manager" 
+                : "Toggle Fullscreen";
+            document.body.appendChild(tooltip);
+
+            const rect = this.getBoundingClientRect();
+            tooltip.style.left = `${rect.left + (rect.width - tooltip.offsetWidth) / 2}px`;
+            tooltip.style.top = `${rect.top - tooltip.offsetHeight - 5}px`;
+        });
+
+        button.addEventListener("mouseout", function() {
+            const tooltip = document.querySelector(".tooltip");
+            if (tooltip) tooltip.remove();
+        });
+    });
 </script>
 </body>
 </html>
