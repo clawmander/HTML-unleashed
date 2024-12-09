@@ -245,14 +245,17 @@
 </div>
 
 <script>
+    // Open About Modal
     function openAboutModal() {
         document.getElementById('aboutModal').style.display = 'block';
     }
 
+    // Close About Modal
     function closeAboutModal() {
         document.getElementById('aboutModal').style.display = 'none';
     }
 
+    // Toggle Fullscreen for Code Editor
     function toggleFullscreen() {
         const editor = document.getElementById('codeEditor');
         if (document.fullscreenElement) {
@@ -262,22 +265,49 @@
         }
     }
 
+    // Handle File Upload
     function handleFileUpload(event) {
         const file = event.target.files[0];
         if (file && file.type === "text/html") {
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('codeEditor').textContent = e.target.result;
+                updateDataUrl();  // Update Data URL when file is loaded
             };
             reader.readAsText(file);
         }
     }
 
+    // Update Data URL display
+    function updateDataUrl() {
+        const codeContent = document.getElementById('codeEditor').textContent;
+        const encodedDataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(codeContent);
+        document.getElementById('dataUrlDisplay').textContent = encodedDataUrl;
+    }
+
+    // Listen for changes in the code editor and update Data URL
+    document.getElementById('codeEditor').addEventListener('input', updateDataUrl);
+
+    // Copy Data URL to clipboard
     function copyDataUrl() {
         const dataUrl = document.getElementById('dataUrlDisplay').textContent;
-        navigator.clipboard.writeText(dataUrl).then(function() {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(dataUrl).then(function() {
+                alert('Data URL copied to clipboard');
+            }).catch(function(error) {
+                console.error('Error copying text: ', error);
+                alert('Failed to copy Data URL');
+            });
+        } else {
+            // Fallback for browsers without clipboard API support
+            const textarea = document.createElement('textarea');
+            textarea.value = dataUrl;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
             alert('Data URL copied to clipboard');
-        });
+        }
     }
 </script>
 </body>
