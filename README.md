@@ -3,7 +3,7 @@
 
 ## Features
 - **HTML Editor**
-- **Instant Data URL Conversion (more conversions coming soon)** 
+- **Instant Data URL Conversion**
 - **Easy-to-use interface**
 
 ## Deployment Options
