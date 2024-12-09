@@ -2,8 +2,8 @@
 **HTML Unleashed** is a simple HTML editor that lets you generate Data URLs from your HTML code and preview them directly in your browser. You can easily write, download, or encode your HTML into a Data URL for immediate use.
 
 ## Features
-- **Real-time HTML editing**
-- **Copy the generated Data URL** to your clipboard
+- **HTML Editor**
+- **Instant Data URL Conversion (more conversions coming soon)** 
 - **Easy-to-use interface**
 
 ## Deployment Options
