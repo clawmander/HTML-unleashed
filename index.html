@@ -365,22 +365,29 @@
     }
 
     function updateDataUrl() {
-        const code = document.getElementById('codeEditor').textContent;
-        const encoding = document.getElementById('encodingSelector').value;
-        let dataUrl;
+    const code = document.getElementById('codeEditor').textContent.trim(); // Trim whitespace
+    const encoding = document.getElementById('encodingSelector').value;
+    let dataUrl;
 
-        if (encoding === 'base64') {
-            dataUrl = 'data:text/html;base64,' + btoa(code);
-        } else if (encoding === 'hex') {
-            dataUrl = 'data:text/html,' + [...code].map(char => char.charCodeAt(0).toString(16).padStart(2, '0')).join('');
-        } else if (encoding === 'utf8') {
-            dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(code);
-        } else if (encoding === 'url') {
-            dataUrl = 'data:text/html,' + encodeURIComponent(code);
+    if (encoding === 'base64') {
+        try {
+            // Normalize the string by replacing newlines and encoding in Base64
+            const normalizedCode = code.replace(/\r?\n/g, '');
+            dataUrl = 'data:text/html;base64,' + btoa(normalizedCode);
+        } catch (error) {
+            console.error('Error encoding to Base64:', error);
+            dataUrl = 'Error: Unable to encode content to Base64.';
         }
-
-        document.getElementById('dataUrlDisplay').textContent = dataUrl;
+    } else if (encoding === 'hex') {
+        dataUrl = 'data:text/html,' + [...code].map(char => char.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+    } else if (encoding === 'utf8') {
+        dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(code);
+    } else if (encoding === 'url') {
+        dataUrl = 'data:text/html,' + encodeURIComponent(code);
     }
+
+    document.getElementById('dataUrlDisplay').textContent = dataUrl;
+}
 
     function copyDataUrl() {
         const dataUrl = document.getElementById('dataUrlDisplay').textContent;
