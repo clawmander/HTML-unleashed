@@ -356,13 +356,25 @@
     }
 
     function downloadFile() {
+    // Ask the user for a filename
+    let filename = prompt("Please enter a filename for your file:", "untitled.html");
+
+    // If the user didn't cancel or leave it empty, proceed
+    if (filename) {
+        // Get the content of the code editor (make sure it's the correct content type)
         const code = document.getElementById('codeEditor').textContent;
+
+        // Create a Blob with the content (adjust MIME type if needed)
         const blob = new Blob([code], { type: 'text/html' });
+
+        // Create a temporary anchor element to trigger the download
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'index.html';
+        link.download = filename; // Set the filename to the user input
         link.click();
     }
+}
+
 
     function updateDataUrl() {
     const code = document.getElementById('codeEditor').textContent.trim(); // Trim whitespace
