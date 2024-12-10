@@ -1,6 +1,6 @@
 **Creative Commons Attribution-NonCommercial 4.0 International License**
 
-**Copyright (c) 2024 Exploit-Kid**
+**Copyright © 2024 Exploit-Kid**
 
 You are free to:
 - **Share** — copy and redistribute the material in any medium or format.
